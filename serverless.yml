@@ -12,6 +12,16 @@ provider:
   runtime: nodejs12.x
   region: ap-southeast-2
   stage: dev
+  environment:
+    USER_TABLE: ${self:service}-${opt:stage, self:provider.stage}
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+      Resource: "*"
 
 # you can overwrite defaults here
 #  stage: dev
@@ -107,3 +117,21 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+resources:
+  Resources:
+    UsersDynamoDbTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: 'id'
+            AttributeType: 'S'
+        KeySchema:
+          -
+            AttributeName: 'id'
+            KeyType: 'HASH'
+        ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+        TableName: ${self:provider.environment.USER_TABLE}

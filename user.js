@@ -1,5 +1,8 @@
 'use strict';
 
+const uuid = require('uuid');
+const AWS = require('aws-sdk');
+
 module.exports.hello = async event => {
   return {
     statusCode: 200,
