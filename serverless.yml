@@ -42,11 +42,6 @@ provider:
 #          - - "arn:aws:s3:::"
 #            - "Ref" : "ServerlessDeploymentBucket"
 #            - "/*"
-
-# you can define service wide environment variables here
-#  environment:
-#    variable1: value1
-
 # you can add packaging information here
 #package:
 #  include:
@@ -57,15 +52,22 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  users:
+  usersList:
     handler: user.list
     description: Return list of users
     events:
       - http:
-          path: users
+          path: users/list
           method: get
-  hello:
-    handler: user.hello
+          cors: true
+  usersPost:
+    handler: user.create
+    description: Create a user
+    events:
+      - http:
+          path: users/create
+          method: post
+          cors: true
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
