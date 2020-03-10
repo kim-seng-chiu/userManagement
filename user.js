@@ -16,7 +16,7 @@ const dynamodb = new AWS.DynamoDB.DocumentClient();
 function encrypt(dataIn) {
   return new Promise((resolve,reject) => {
     const encryptParams = {
-      KeyId: `${KEY_ID}`,
+      KeyId: `${process.env.KEY_ID}`,
       Plaintext: dataIn
     };
     console.log('Set encryption parameters');
